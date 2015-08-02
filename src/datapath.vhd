@@ -13,25 +13,6 @@ entity datapath is
 end datapath;
 
 architecture sequential of datapath is
-  type cmd_fields_t is record
-    opcode : opcode_t;
-    reg_a : reg_addr_t;
-    reg_b : reg_addr_t;
-    reg_c : reg_addr_t;
-    imm10 : word_t;
-    imm7 : word_t;
-  end record;
-  
-  function parse_cmd (cmd : in word_t) return cmd_fields_t is
-  begin
-    return (opcode => cmd (15 downto 13),
-            reg_a => reg_addr_t (cmd (12 downto 10)),
-            reg_b => reg_addr_t (cmd (9 downto 7)),
-            reg_c => reg_addr_t (cmd (2 downto 0)),
-            imm10 => cmd (9 downto 0) & "000000",
-            imm7 => word_t (resize (signed (cmd (6 downto 0)), WORD_WIDTH)));
-  end parse_cmd;
-
   type reg_t is record
     pc : word_t;
   end record;
