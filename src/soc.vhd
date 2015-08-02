@@ -32,15 +32,10 @@ begin
               reset => reset,
               i => cpu_i,
               o => cpu_o);
-  
-  ram_inst : ram
-    port map (clk => clk,
-              i => data_mem_i,
-              o => data_mem_o);
 
-  rom_inst : rom
+  ram_inst : dual_port_ram
     generic map (
-      ROM_SIZE => 128,
+      RAM_SIZE => 128,
       INIT => 
         (0 => "0000010000000000",  -- add r1, r0, r0
          1 => "0100110000000000",  -- nand r3, r0, r0 (r3 = 0xffff)
@@ -48,8 +43,11 @@ begin
          3 => "0010010010000010",  -- addi r1, r1, 2
          4 => "1100000001111101",  -- beq r0, r0, -3
          5 to 127 => ZERO_WORD))
-    port map (i => code_mem_i,
-              o => code_mem_o);
+    port map (clk => clk,
+              i_data => data_mem_i,
+              i_code => code_mem_i,
+              o_data => data_mem_o,
+              o_code => code_mem_o);
               
   data_mem_i <= cpu_o.data_mem;
   code_mem_i <= cpu_o.code_mem;

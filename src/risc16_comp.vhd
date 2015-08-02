@@ -43,4 +43,14 @@ package risc16_comp is
          i : in data_mem_in_t;
          o : out data_mem_out_t);
   end component;
+
+  component dual_port_ram is
+    generic (RAM_SIZE : positive := 128;
+             INIT : word_vector);
+    port (clk : in std_logic;
+          i_data : in data_mem_in_t;
+          i_code : in code_mem_in_t;
+          o_data : out data_mem_out_t;
+          o_code : out code_mem_out_t);
+  end component;
 end risc16_comp;
