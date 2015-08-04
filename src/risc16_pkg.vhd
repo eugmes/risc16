@@ -11,6 +11,7 @@ package risc16_pkg is
   
   constant ZERO_WORD : word_t := (others => '0');
   constant INITIAL_PC : word_t := ZERO_WORD;
+  constant NOP_COMMAND : word_t := ZERO_WORD;
 
   constant REG_COUNT : natural := 8;
   constant REG_ADDR_WIDTH : natural := 3;
