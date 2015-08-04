@@ -12,8 +12,9 @@ entity soc is
 end soc;
 
 architecture mixed of soc is
+  signal reset_cnt : unsigned (1 downto 0) := (others => '0');
   signal clk : std_logic;
-  signal reset : std_logic;
+  signal reset : std_logic := '1';
 
   signal cpu_i : cpu_in_t;
   signal cpu_o : cpu_out_t;
@@ -25,7 +26,18 @@ architecture mixed of soc is
   signal code_mem_o : code_mem_out_t;
 begin
   clk <= CLK_12MHz;
-  reset <= '0';
+
+  reset_proc : process (clk) is
+  begin
+    if rising_edge (clk) then
+      if reset_cnt /= "11" then
+        reset_cnt <= reset_cnt + 1;
+        reset <= '1';
+      else
+        reset <= '0';
+      end if;
+    end if;
+  end process;
 
   cpu_inst : cpu
     port map (clk => clk,
