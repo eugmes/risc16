@@ -54,7 +54,7 @@ begin
   
   cpu_i.data_mem <= data_mem_o;
   cpu_i.code_mem <= code_mem_o;
-  
+
   write_led : process (clk) is
   begin
     if rising_edge (clk) then

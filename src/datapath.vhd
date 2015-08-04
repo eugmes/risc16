@@ -36,9 +36,9 @@ begin
     variable reg_we : std_logic;
   begin
     v := r;
-    
+
     v.pc := word_t (uword_t (v.pc) + to_unsigned (1, WORD_WIDTH));
-    
+
     cmd_fields := parse_cmd (i.code_mem.command);
 
     alu_control := ALU_PASS1;
@@ -51,9 +51,9 @@ begin
     
     reg_addr1 := cmd_fields.reg_b;
     reg_addr2 := cmd_fields.reg_c;
- 
+
     data_we := '0';
- 
+
     case cmd_fields.opcode is
       when OPCODE_ADD =>
         alu_control := ALU_ADD;
@@ -79,7 +79,7 @@ begin
         reg_we := '0';
         alu_control := ALU_EQ;
         reg_addr2 := cmd_fields.reg_a;
-        
+
         if i.alu.data (0) = '1' then
           v.pc := word_t (sword_t (v.pc) + sword_t (cmd_fields.imm7));
         end if;
@@ -100,13 +100,13 @@ begin
                   w_addr => reg_w_addr,
                   we => reg_we,
                   w_data => reg_w_data) after 1 ns;
- 
+
     o.code_mem <= (addr => r.pc) after 1 ns; 
     o.data_mem <= (addr => i.alu.data,
                    we => data_we,
                    w_data => i.regfile.r_data2) after 1 ns;
   end process;
-  
+
   regs : process (clk) is
   begin
     if rising_edge (clk) then
